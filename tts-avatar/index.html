@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Playback</title>
+</head>
+<body>
+    <h1>Batch Synthesis Video Playback</h1>
+    <button id="start-synthesis">Start Synthesis</button>
+    <video id="video-player" controls style="display:none;"></video>
+
+    <script>
+        document.getElementById('start-synthesis').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/synthesize', { method: 'POST' });
+                const data = await response.json();
+                if (data.status === 'success') {
+                    const videoPlayer = document.getElementById('video-player');
+                    videoPlayer.src = data.video_url;
+                    videoPlayer.style.display = 'block';
+                    videoPlayer.play();
+                } else {
+                    alert('Synthesis failed. Try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred.');
+            }
+        });
+    </script>
+</body>
+</html>
